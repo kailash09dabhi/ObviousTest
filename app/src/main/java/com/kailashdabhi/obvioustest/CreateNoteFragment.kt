@@ -47,6 +47,12 @@ class CreateNoteFragment : Fragment() {
         when (it.status) {
           SUCCESS -> {
             Toast.makeText(context, "Note created!", Toast.LENGTH_SHORT).show()
+            it.data?.let { note ->
+              parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, NoteDetailFragment.newInstance(note))
+                .addToBackStack(null)
+                .commit()
+            }
             insertNoteLiveData.removeObservers(this)
           }
           ERROR -> {

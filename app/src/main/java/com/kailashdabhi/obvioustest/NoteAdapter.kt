@@ -33,7 +33,7 @@ class NoteAdapter(val items: List<Note>) :
     val note = items[position]
     holder.title.text = note.title
     holder.content.text = note.content
-    holder.createdAt.text = note.createdAt.toString()
+    holder.createdAt.text = App.dateFormat.format(note.createdAt)
   }
 
   class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
