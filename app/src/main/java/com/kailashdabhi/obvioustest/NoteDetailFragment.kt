@@ -1,7 +1,11 @@
 package com.kailashdabhi.obvioustest
 
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import com.kailashdabhi.obvioustest.base.BaseFragment
 import com.kailashdabhi.obvioustest.data.database.Note
 import kotlinx.android.synthetic.main.fragment_note_detail.date
@@ -29,13 +33,35 @@ class NoteDetailFragment : BaseFragment() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setHasOptionsMenu(true)
     activity?.title = "Note Detail"
-    setHasOptionsMenu(false)
+    (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     arguments?.getParcelable<Note>(ARGS_NOTE)?.let {
-      title.text = it.title
-      content.text = it.content
-//      13 January 2018, 5:30 PM
-      date.text = App.dateFormat.format(it.createdAt)
+      title.text = "Title: " + it.title
+      content.text = "Content: " + it.content
+      date.text = "Date: " + App.dateFormat.format(it.createdAt)
     }
+    view.isFocusableInTouchMode = true
+    view.requestFocus()
+    view.setOnKeyListener { _, keyCode, _ ->
+      if (keyCode == KeyEvent.KEYCODE_BACK) {
+        parentFragmentManager.popBackStack(
+          CreateNoteFragment.javaClass.name,
+          FragmentManager.POP_BACK_STACK_INCLUSIVE
+        )
+      }
+      true
+    }
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return if (item.itemId == android.R.id.home) {
+      parentFragmentManager.popBackStack(
+        CreateNoteFragment.javaClass.name,
+        FragmentManager.POP_BACK_STACK_INCLUSIVE
+      )
+      true
+    } else
+      super.onOptionsItemSelected(item)
   }
 }

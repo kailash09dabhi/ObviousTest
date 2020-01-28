@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +35,7 @@ class NoteListFragment : BaseFragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     activity?.title = "Note List"
+    (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
     setHasOptionsMenu(true)
     viewModel.notes().observe(viewLifecycleOwner, Observer {
       when (it.status) {
@@ -71,7 +73,8 @@ class NoteListFragment : BaseFragment() {
     when (item.itemId) {
       R.id.action_addNote -> {
         parentFragmentManager.beginTransaction()
-          .replace(R.id.fragmentContainer, CreateNoteFragment.newInstance()).addToBackStack(null)
+          .replace(R.id.fragmentContainer, CreateNoteFragment.newInstance())
+          .addToBackStack(CreateNoteFragment.javaClass.name)
           .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
           .commit()
       }

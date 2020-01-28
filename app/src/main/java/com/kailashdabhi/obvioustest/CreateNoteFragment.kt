@@ -1,8 +1,11 @@
 package com.kailashdabhi.obvioustest
 
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.kailashdabhi.obvioustest.base.BaseFragment
@@ -27,11 +30,20 @@ class CreateNoteFragment : BaseFragment() {
   private val viewModel by viewModels<NoteViewModel>()
 
   override fun layoutId() = R.layout.fragment_note_create
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setHasOptionsMenu(true)
     activity?.title = "Create note"
-    setHasOptionsMenu(false)
+    (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    view.isFocusable = true
+    view.isFocusableInTouchMode = true
+    view.requestFocus()
+    view.setOnKeyListener { _, keyCode, _ ->
+      if (keyCode == KeyEvent.KEYCODE_BACK) {
+        parentFragmentManager.popBackStack()
+      }
+      true
+    }
     save.setOnClickListener {
       activity?.hideKeyboard()
       val insertNoteLiveData = viewModel.insertNote(
@@ -44,7 +56,7 @@ class CreateNoteFragment : BaseFragment() {
             it.data?.let { note ->
               parentFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, NoteDetailFragment.newInstance(note))
-                .addToBackStack(null)
+                .addToBackStack(NoteDetailFragment.javaClass.name)
                 .commit()
             }
             insertNoteLiveData.removeObservers(this)
@@ -58,5 +70,13 @@ class CreateNoteFragment : BaseFragment() {
         }
       })
     }
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return if (item.itemId == android.R.id.home) {
+      parentFragmentManager.popBackStack()
+      true
+    } else
+      super.onOptionsItemSelected(item)
   }
 }
