@@ -1,13 +1,11 @@
 package com.kailashdabhi.obvioustest
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.kailashdabhi.obvioustest.base.BaseFragment
 import com.kailashdabhi.obvioustest.base.Status.ERROR
 import com.kailashdabhi.obvioustest.base.Status.LOADING
 import com.kailashdabhi.obvioustest.base.Status.SUCCESS
@@ -21,22 +19,18 @@ import kotlinx.android.synthetic.main.fragment_note_create.save
  * @author kailash09dabhi@gmail.com
  * @date 27, Jan 2020 (11:18)
  */
-class CreateNoteFragment : Fragment() {
+class CreateNoteFragment : BaseFragment() {
   companion object {
     fun newInstance() = CreateNoteFragment()
   }
 
   private val viewModel by viewModels<NoteViewModel>()
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View? {
-    return inflater.inflate(R.layout.fragment_note_create, container, false)
-  }
+
+  override fun layoutId() = R.layout.fragment_note_create
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    activity?.title = "Create note"
     setHasOptionsMenu(false)
     save.setOnClickListener {
       activity?.hideKeyboard()
