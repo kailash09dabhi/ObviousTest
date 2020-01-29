@@ -11,6 +11,6 @@ interface NoteDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insertNote(note: Note): Long
 
-  @Query("SELECT * FROM Note")
+  @Query("SELECT * FROM Note ORDER BY created_at DESC")
   fun noteList(): LiveData<List<Note>>
 }

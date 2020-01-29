@@ -21,7 +21,16 @@ object NoteRepository {
     )
   }
 
-  fun insert(note: Note) = liveData<Resource<Note>>(Dispatchers.IO) {
+  fun insert(note: Note) = liveData(Dispatchers.IO) {
+    if (note.title.isNullOrEmpty() || note.content.isNullOrEmpty()) {
+      emit(
+        Resource.error(
+          "Note's title or content must not be empty.",
+          note
+        )
+      )
+      return@liveData
+    }
     val noteId = ServiceLocator.database().noteDao().insertNote(note)
     if (noteId >= 0)
       emit(Resource.success(note.copy(id = noteId)))
