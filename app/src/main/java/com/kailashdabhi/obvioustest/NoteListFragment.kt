@@ -58,7 +58,15 @@ class NoteListFragment : BaseFragment() {
     progress.visibility = View.GONE
     recyclerView.visibility = View.VISIBLE
     recyclerView.layoutManager = LinearLayoutManager(context)
-    recyclerView.adapter = NoteAdapter(resource.data ?: listOf())
+    val noteAdapter = NoteAdapter(resource.data ?: listOf())
+    noteAdapter.onItemClickListener { _, note ->
+      parentFragmentManager.beginTransaction()
+        .replace(R.id.fragmentContainer, NoteDetailFragment.newInstance(note))
+        .addToBackStack(NoteDetailFragment.javaClass.name)
+        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+        .commit()
+    }
+    recyclerView.adapter = noteAdapter
   }
 
   override fun onCreateOptionsMenu(

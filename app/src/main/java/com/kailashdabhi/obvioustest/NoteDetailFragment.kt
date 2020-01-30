@@ -46,8 +46,8 @@ class NoteDetailFragment : BaseFragment() {
     view.setOnKeyListener { _, keyCode, _ ->
       if (keyCode == KeyEvent.KEYCODE_BACK) {
         parentFragmentManager.popBackStack(
-          CreateNoteFragment.javaClass.name,
-          FragmentManager.POP_BACK_STACK_INCLUSIVE
+          NoteListFragment.javaClass.name,
+          0
         )
       }
       true

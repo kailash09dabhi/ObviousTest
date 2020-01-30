@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.fragment_note_create.editTitle
 import kotlinx.android.synthetic.main.fragment_note_create.save
 
 /**
+ * A Fragment which handles the note creation.
  * @author kailash09dabhi@gmail.com
  * @date 27, Jan 2020 (11:18)
  */

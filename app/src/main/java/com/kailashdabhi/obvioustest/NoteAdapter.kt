@@ -17,6 +17,11 @@ class NoteAdapter(val items: List<Note>) :
     return items.size
   }
 
+  fun onItemClickListener(onItemClickListener: (position: Int, note: Note) -> Unit) {
+    this.onItemClickListener = onItemClickListener
+  }
+
+  lateinit var onItemClickListener: (position: Int, note: Note) -> Unit
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int
@@ -34,6 +39,9 @@ class NoteAdapter(val items: List<Note>) :
     holder.title.text = note.title
     holder.content.text = note.content
     holder.createdAt.text = App.dateFormat.format(note.createdAt)
+    holder.itemView.setOnClickListener {
+      onItemClickListener(position, note)
+    }
   }
 
   class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

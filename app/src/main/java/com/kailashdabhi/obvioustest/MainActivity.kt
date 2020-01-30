@@ -13,7 +13,16 @@ class MainActivity : AppCompatActivity() {
           R.id.fragmentContainer,
           NoteListFragment.newInstance()
         )
+        .addToBackStack(NoteListFragment.javaClass.name)
         .commit()
+    }
+  }
+
+  override fun onBackPressed() {
+    if (supportFragmentManager.backStackEntryCount == 1) {
+      finish()
+    } else {
+      super.onBackPressed()
     }
   }
 }
