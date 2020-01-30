@@ -5,7 +5,6 @@ import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import com.kailashdabhi.obvioustest.base.BaseFragment
 import com.kailashdabhi.obvioustest.data.database.Note
 import kotlinx.android.synthetic.main.fragment_note_detail.date
@@ -57,8 +56,8 @@ class NoteDetailFragment : BaseFragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return if (item.itemId == android.R.id.home) {
       parentFragmentManager.popBackStack(
-        CreateNoteFragment.javaClass.name,
-        FragmentManager.POP_BACK_STACK_INCLUSIVE
+        NoteListFragment.javaClass.name,
+        0
       )
       true
     } else

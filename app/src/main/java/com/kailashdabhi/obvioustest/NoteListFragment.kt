@@ -60,11 +60,7 @@ class NoteListFragment : BaseFragment() {
     recyclerView.layoutManager = LinearLayoutManager(context)
     val noteAdapter = NoteAdapter(resource.data ?: listOf())
     noteAdapter.onItemClickListener { _, note ->
-      parentFragmentManager.beginTransaction()
-        .replace(R.id.fragmentContainer, NoteDetailFragment.newInstance(note))
-        .addToBackStack(NoteDetailFragment.javaClass.name)
-        .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-        .commit()
+      navigateTo(NoteDetailFragment.newInstance(note))
     }
     recyclerView.adapter = noteAdapter
   }
@@ -80,11 +76,7 @@ class NoteListFragment : BaseFragment() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
       R.id.action_addNote -> {
-        parentFragmentManager.beginTransaction()
-          .replace(R.id.fragmentContainer, CreateNoteFragment.newInstance())
-          .addToBackStack(CreateNoteFragment.javaClass.name)
-          .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-          .commit()
+        navigateTo(CreateNoteFragment.newInstance())
       }
     }
     return true

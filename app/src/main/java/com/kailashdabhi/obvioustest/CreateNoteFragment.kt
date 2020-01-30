@@ -55,10 +55,7 @@ class CreateNoteFragment : BaseFragment() {
           SUCCESS -> {
             Toast.makeText(context, "Note created!", Toast.LENGTH_SHORT).show()
             it.data?.let { note ->
-              parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, NoteDetailFragment.newInstance(note))
-                .addToBackStack(NoteDetailFragment.javaClass.name)
-                .commit()
+              navigateTo(NoteDetailFragment.newInstance(note))
             }
             insertNoteLiveData.removeObservers(this)
           }
