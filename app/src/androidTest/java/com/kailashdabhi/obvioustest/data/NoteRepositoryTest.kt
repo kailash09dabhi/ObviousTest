@@ -36,13 +36,12 @@ class NoteRepositoryTest {
   private val notes = NoteRepository.notes()
   @Before
   fun setUp() {
-    ServiceLocator.coroutineContext(Dispatchers.Main)
+    ServiceLocator.coroutineContext(Dispatchers.Main.immediate)
     noteDatabase = Room.inMemoryDatabaseBuilder(
       ApplicationProvider.getApplicationContext(),
       NoteDatabase::class.java
     ).allowMainThreadQueries().build()
     ServiceLocator.database(noteDatabase)
-
     notes.observeForever {}
   }
 
@@ -62,8 +61,9 @@ class NoteRepositoryTest {
   @Test
   fun insert_note_function_should_save_title_and_content_of_note_as_it_is() {
     noteDatabase.noteDao().removeAllNotes()
-    assertEquals(0, notes.value?.data?.size?:0)
+    assertEquals(0, notes.value?.data?.size ?: 0)
     NoteRepository.insert(NOTE_1).observeForever {}
+    assertEquals(1, notes.value?.data?.size ?: 0)
     assertEquals(NOTE_1.title, notes.value?.data?.get(0)?.title)
     assertEquals(NOTE_1.content, notes.value?.data?.get(0)?.content)
   }
@@ -71,7 +71,7 @@ class NoteRepositoryTest {
   @Test
   fun insert_note_function_should_give_error_when_title_of_note_is_empty() {
     noteDatabase.noteDao().removeAllNotes()
-    assertEquals(0, notes.value?.data?.size?:0)
+    assertEquals(0, notes.value?.data?.size ?: 0)
     val insertLiveData = NoteRepository.insert(Note(title = "", content = NOTE_1.content))
     insertLiveData.observeForever {}
     assertEquals(Status.ERROR, insertLiveData.value?.status)
@@ -80,7 +80,7 @@ class NoteRepositoryTest {
   @Test
   fun insert_note_function_should_give_error_when_content_of_note_is_empty() {
     noteDatabase.noteDao().removeAllNotes()
-    assertEquals(0, notes.value?.data?.size?:0)
+    assertEquals(0, notes.value?.data?.size ?: 0)
     val insertLiveData = NoteRepository.insert(Note(title = NOTE_1.title, content = ""))
     insertLiveData.observeForever {}
     assertEquals(Status.ERROR, insertLiveData.value?.status)
