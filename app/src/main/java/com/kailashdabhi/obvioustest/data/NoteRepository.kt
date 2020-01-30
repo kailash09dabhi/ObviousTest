@@ -21,7 +21,7 @@ object NoteRepository {
     )
   }
 
-  fun insert(note: Note) = liveData(Dispatchers.IO) {
+  fun insert(note: Note) = liveData(ServiceLocator.coroutineContext()) {
     if (note.title.isNullOrEmpty() || note.content.isNullOrEmpty()) {
       emit(
         Resource.error(

@@ -2,6 +2,7 @@ package com.kailashdabhi.obvioustest
 
 import android.app.Application
 import com.kailashdabhi.obvioustest.data.database.NoteDatabase
+import kotlinx.coroutines.Dispatchers
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -13,6 +14,7 @@ class App : Application() {
   override fun onCreate() {
     super.onCreate()
     ServiceLocator.database(NoteDatabase.from(this))
+    ServiceLocator.coroutineContext(Dispatchers.IO)
   }
 
   companion object {

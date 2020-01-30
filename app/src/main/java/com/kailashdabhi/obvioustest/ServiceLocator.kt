@@ -1,6 +1,7 @@
 package com.kailashdabhi.obvioustest
 
 import com.kailashdabhi.obvioustest.data.database.NoteDatabase
+import kotlin.coroutines.CoroutineContext
 
 /**
  * @author Kailash Dabhi
@@ -9,12 +10,17 @@ import com.kailashdabhi.obvioustest.data.database.NoteDatabase
  */
 object ServiceLocator {
   private lateinit var database: NoteDatabase
+  private lateinit var coroutineContext: CoroutineContext
 
-  fun database(): NoteDatabase {
-    return database
-  }
+  fun database() = database
 
   fun database(noteDatabase: NoteDatabase) {
     database = noteDatabase
+  }
+
+  fun coroutineContext() = coroutineContext
+
+  fun coroutineContext(coroutineContext: CoroutineContext) {
+    this.coroutineContext = coroutineContext
   }
 }
